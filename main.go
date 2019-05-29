@@ -12,6 +12,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/contacts", controllers.GetContacts).Methods("GET")
+	router.HandleFunc("/api/states", controllers.GetStates).Methods("GET")
 
 	port := os.Getenv("PORT")
 	if port == "" {
