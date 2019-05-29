@@ -5,16 +5,12 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"github.com/user/contactsApi/models"
 	"io"
 	"log"
 	"net/http"
 	"os"
 )
-
-type State struct {
-	Abbreviation	string `json:"abbreviation"`
-	Name    		string `json:"name"`
-}
 
 func Message(status bool, message string) map[string]interface{} {
 	return map[string]interface{} {"status" : status, "message" : message}
@@ -25,14 +21,14 @@ func Respond (w http.ResponseWriter, data map[string] interface{}) {
 	json.NewEncoder(w).Encode(data)
 }
 
-func ReadStatesFromCsv() []State {
+func ReadStatesFromCsv() []models.State {
 	csvFile, error := os.Open("data/states.csv")
 	if error != nil {
 		fmt.Println(error)
 	}
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	fmt.Print(csvFile)
-	var states []State
+	var states []models.State
 	for {
 		line, error := reader.Read()
 		if error == io.EOF {
@@ -41,7 +37,7 @@ func ReadStatesFromCsv() []State {
 			fmt.Println(error)
 			log.Fatal(error)
 		}
-		states = append(states, State{
+		states = append(states, models.State{
 			Abbreviation: line[0],
 			Name: line[1],
 		})
